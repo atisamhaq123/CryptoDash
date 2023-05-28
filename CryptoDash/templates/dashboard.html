@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptocurrency Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        .container {
+            
+            overflow: auto;
+        }
+    
+        .graph-container {
+         
+            margin-bottom: 20px;
+        }
+    
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 300px;
+        }
+    
+        #lineChart,
+        #barChart,
+        #pieChart {
+            width: 100%;
+            height: 100%;
+        }
+      
+    </style>
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7">
+                <h1 class="text-center">Cryptocurrency Dashboard</h1>
+                <div class="graph-container">
+                    <canvas id="lineChart"></canvas>
+                </div>
+            </div>
+            <div class="col-lg-5 mt-5">
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-sm table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Cryptocurrency</th>
+                            <th>Price (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for currency in crypto_data %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ currency.name }}</td>
+                            <td>{{ currency.quote.USD.price }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <script>
+        var currencyNames = {{ currency_names | tojson }};
+        var currencyPrices = {{ currency_prices | tojson }};
+
+        // Line Chart
+        var lineChart = new Chart(document.getElementById('lineChart'), {
+    type: 'line',
+    data: {
+        labels: currencyNames,
+        datasets: [{
+            label: 'Price',
+            data: currencyPrices,
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(255, 99, 132, 1)'
+        }]
+    },
+    options: {
+        scales: {
+            x: {
+                display: true,
+                title: {
+                    display: true,
+                    text: 'Cryptocurrency',
+                    font: {
+                        size: 14,
+                        weight: 'bold'
+                    }
+                }
+            },
+            y: {
+                display: true,
+                title: {
+                    display: true,
+                    text: 'Price (USD)',
+                    font: {
+                        size: 15,
+                        weight: 'bold'
+                    }
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Cryptocurrency Prices',
+                font: {
+                    size: 18,
+                    weight: 'bold'
+                }
+            }
+        }
+    }
+});
+
+        // Bar Chart
+        var barChart = new Chart(document.getElementById('barChart'), {
+            type: 'bar',
+            data: {
+                labels: currencyNames,
+                datasets: [{
+                    label: 'Price (USD)',
+                    data: currencyPrices,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+    <script>
+        // Get the data for the pie chart
+        var pieChartData = {
+          labels: {{ currency_names | tojson }},
+          datasets: [{
+            data: {{ currency_prices | tojson }},
+            backgroundColor: [
+              '#FF6384',
+              '#36A2EB',
+              '#FFCE56',
+              '#33FF66',
+              '#FF9F40',
+              '#ADFF2F',
+              '#BA55D3',
+              '#FFD700',
+              '#32CD32',
+              '#FF00FF'
+            ]
+          }]
+        };
+      
+        // Create the pie chart
+        var pieChart = new Chart(document.getElementById('pieChart'), {
+          type: 'pie',
+          data: pieChartData,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false
+          }
+        });
+      </script>
+</body>
+
+</html>

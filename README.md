@@ -1,5 +1,5 @@
 # CryptoDash
-CryptoDash is a mesmerizing cryptocurrency dashboard that allows you to monitor and track the prices of various cryptocurrencies in real-time. It provides an intuitive and visually appealing interface with mesmerizing graphs to give you a comprehensive overview of the cryptocurrency market.
+CryptoDash is a mesmerizing cryptocurrency dashboard that allows you to monitor and track the prices of various cryptocurrencies in real-time. It provides an intuitive and visually appealing interface with superb graphs to give you a comprehensive overview of the cryptocurrency market.
 
 <img src="https://github.com/atisamhaq123/CryptoDash/blob/main/CryptoDash/img/img.png">
 
